@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,9 +48,25 @@ namespace Business.Concrete
             return new DataResult<User>(_userDal.GetById(u => u.Id == id), true, "User by id...");
         }
 
+        public void AddUser(User user)
+        {
+            _userDal.Add(user);
+        }
         public IResult UpdateUser(UpdateUserVM UpdateUserVM)
         {
             throw new NotImplementedException();
         }
+
+        public List<OperationClaim> GetClaims(User user)
+        {
+            return _userDal.GetClaims(user);
+        }
+
+        public User GetByMail(string email)
+        {
+            return _userDal.Get(u => u.Email == email);
+        }
+
+        
     }
 }

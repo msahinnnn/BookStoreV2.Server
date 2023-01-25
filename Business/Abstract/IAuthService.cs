@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Concrete;
+using Core.Security.JWT;
 using Core.Utilities.Results;
 using Entities.ViewModels.UserVM;
 using System;
@@ -14,6 +15,6 @@ namespace Business.Abstract
         IDataResult<User> Register(CreateUserVM createUserVM, string password);
         IDataResult<User> Login(LoginUserVM loginUserVM);
         IResult UserExists(string email);
-        //IDataResult<AccessToken> CreateAccessToken(User user);
+        IDataResult<AccessToken> CreateAccessToken(User user);
     }
 }

@@ -22,6 +22,21 @@ namespace DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Core.Entities.Concrete.OperationClaim", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OperationClaims");
+                });
+
             modelBuilder.Entity("Core.Entities.Concrete.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -56,7 +71,24 @@ namespace DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.AuthorCreateVM", b =>
+            modelBuilder.Entity("Core.Entities.Concrete.UserOperationClaim", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OperationClaimId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserOperationClaims");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Author", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -108,7 +140,7 @@ namespace DataAccess.Migrations
                     b.ToTable("BookAuthor");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.PublisherCreateVM", b =>
+            modelBuilder.Entity("Entities.Concrete.Publisher", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -125,7 +157,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.Book", b =>
                 {
-                    b.HasOne("Entities.Concrete.PublisherCreateVM", "Publisher")
+                    b.HasOne("Entities.Concrete.Publisher", "Publisher")
                         .WithMany("Books")
                         .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -136,7 +168,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.BookAuthor", b =>
                 {
-                    b.HasOne("Entities.Concrete.AuthorCreateVM", "Author")
+                    b.HasOne("Entities.Concrete.Author", "Author")
                         .WithMany("Books")
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -153,7 +185,7 @@ namespace DataAccess.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.AuthorCreateVM", b =>
+            modelBuilder.Entity("Entities.Concrete.Author", b =>
                 {
                     b.Navigation("Books");
                 });
@@ -163,7 +195,7 @@ namespace DataAccess.Migrations
                     b.Navigation("Authors");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.PublisherCreateVM", b =>
+            modelBuilder.Entity("Entities.Concrete.Publisher", b =>
                 {
                     b.Navigation("Books");
                 });

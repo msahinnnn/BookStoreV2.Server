@@ -2,6 +2,7 @@
 using Business.Concrete;
 using Entities.ViewModels.Author;
 using Entities.ViewModels.Publisher;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace API.Controllers
             _authorService = authorService;
         }
 
+        [Authorize(Roles = "Admin, Standard")]
         [HttpGet("authors")]
         public IActionResult Get()
         {
@@ -29,7 +31,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
-
+        [Authorize(Roles = "Admin, Standard")]
         [HttpGet("author/{id}")]
         public IActionResult GetById(Guid id)
         {
@@ -41,6 +43,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin, Standard")]
         [HttpGet("authors-detailed")]
         public IActionResult GetDetail()
         {
@@ -52,6 +55,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Post([FromBody] CreateAuthorVM createAuthorVM)
         {
@@ -63,6 +67,7 @@ namespace API.Controllers
             return BadRequest(result.Message);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public IActionResult Delete([FromBody] DeleteAuthorVM deleteAuthorVM)
         {
@@ -74,6 +79,7 @@ namespace API.Controllers
             return BadRequest(result.Message);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public IActionResult Update([FromBody] UpdateAuthorVM updateAuthorVM)
         {

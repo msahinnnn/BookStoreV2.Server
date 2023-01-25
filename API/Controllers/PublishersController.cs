@@ -2,6 +2,7 @@
 using Business.Concrete;
 using Entities.ViewModels.Book;
 using Entities.ViewModels.Publisher;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace API.Controllers
             _publisherService = publisherService;
         }
 
+        [Authorize(Roles = "Admin, Standard")]
         [HttpGet("publishers")]
         public IActionResult Get()
         {
@@ -29,6 +31,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin, Standard")]
         [HttpGet("publisher/{id}")]
         public IActionResult GetById(Guid id)
         {
@@ -40,6 +43,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin, Standard")]
         [HttpGet("publishers-detailed")]
         public IActionResult GetDetail()
         {
@@ -51,6 +55,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Post([FromBody] CreatePublisherVM createPublisherVM)
         {
@@ -62,6 +67,7 @@ namespace API.Controllers
             return BadRequest(result.Message);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public IActionResult Delete([FromBody] DeletePublisherVM deletePublisherVM)
         {
@@ -73,6 +79,7 @@ namespace API.Controllers
             return BadRequest(result.Message);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public IActionResult Update([FromBody] UpdatePublisherVM updatePublisherVM)
         {

@@ -2,6 +2,7 @@
 using Business.Concrete;
 using Entities.ViewModels.Author;
 using Entities.ViewModels.Book;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,6 +19,7 @@ namespace API.Controllers
             _bookService = bookService;
         }
 
+        [Authorize(Roles = "Admin, Standard")]
         [HttpGet("books")]
         public IActionResult Get()
         {
@@ -29,6 +31,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin, Standard")]
         [HttpGet("book/{id}")]
         public IActionResult GetById(Guid id)
         {
@@ -40,6 +43,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin, Standard")]
         [HttpGet("books-detailed")]
         public IActionResult GetDetail()
         {
@@ -51,6 +55,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Post([FromBody] CreateBookVM createBookVM)
         {
@@ -62,6 +67,7 @@ namespace API.Controllers
             return BadRequest(result.Message);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public IActionResult Delete([FromBody] DeleteBookVM deleteBookVM)
         {
@@ -73,6 +79,7 @@ namespace API.Controllers
             return BadRequest(result.Message);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public IActionResult Update([FromBody] UpdateBookVM updateBookVM)
         {

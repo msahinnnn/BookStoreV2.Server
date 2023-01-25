@@ -43,6 +43,11 @@ namespace DataAccess.Concrete.InMemory
             throw new NotImplementedException();
         }
 
+        public User Get(Expression<Func<User, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<User> GetAll(Expression<Func<User, bool>> filter = null)
         {
             throw new NotImplementedException();
@@ -54,6 +59,11 @@ namespace DataAccess.Concrete.InMemory
         }
 
         public User GetById(Expression<Func<User, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<OperationClaim> GetClaims(User user)
         {
             throw new NotImplementedException();
         }
