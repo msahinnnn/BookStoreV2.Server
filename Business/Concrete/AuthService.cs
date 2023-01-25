@@ -16,11 +16,13 @@ namespace Business.Concrete
     {
         private IUserService _userService;
         private ITokenHelper _tokenHelper;
+        private IActionService _actionService;
 
-        public AuthService(IUserService userService, ITokenHelper tokenHelper)
+        public AuthService(IUserService userService, ITokenHelper tokenHelper, IActionService actionService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
+            _actionService = actionService;
         }
 
         public IDataResult<User> Login(LoginUserVM loginUserVM)
@@ -36,6 +38,7 @@ namespace Business.Concrete
                 return new DataResult<User>(userToCheck, false, "Password incorrect!");
             }
 
+            _actionService.CreateAction("User logged in");
             return new DataResult<User>(userToCheck, true,"Login succesfull...");
         }
 
@@ -53,7 +56,8 @@ namespace Business.Concrete
                 Status = true
             };
             _userService.AddUser(user);
-            return new DataResult<User>(user,true ,"Kayıt oldu");
+            _actionService.CreateAction("New registered.");
+            return new DataResult<User>(user,true ,"Register successfull...");
         }
 
         public IResult UserExists(string email)
@@ -69,7 +73,7 @@ namespace Business.Concrete
         {
             var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims);
-            return new DataResult<AccessToken>(accessToken, true, "Token oluşturuldu");
+            return new DataResult<AccessToken>(accessToken, true, "Token created");
         }
     }
 }

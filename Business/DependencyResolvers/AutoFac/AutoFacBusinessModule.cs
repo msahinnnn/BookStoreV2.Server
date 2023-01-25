@@ -4,6 +4,7 @@ using Business.Concrete;
 using Core.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using DataAccess.Concrete.InMemory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,9 @@ namespace Business.DependencyResolvers.AutoFac
 
             builder.RegisterType<BookService>().As<IBookService>().SingleInstance();
             builder.RegisterType<EfBookDal>().As<IBookDal>().SingleInstance();
+
+            builder.RegisterType<ActionService>().As<IActionService>().SingleInstance();
+            builder.RegisterType<InMemoryActionDal>().As<IInMemoryActionDal>().SingleInstance();
 
             builder.RegisterType<PublisherService>().As<IPublisherService>().SingleInstance();
             builder.RegisterType<EfPublisherDal>().As<IPublisherDal>().SingleInstance();

@@ -17,6 +17,7 @@ namespace API.Controllers
             _userService = userService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("users")]
         public IActionResult Get()
         {
@@ -28,6 +29,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("user/{id}")]
         public IActionResult GetById(Guid id)
         {
