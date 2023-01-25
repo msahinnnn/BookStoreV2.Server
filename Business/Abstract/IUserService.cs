@@ -1,5 +1,7 @@
-﻿using Core.Utilities.Results;
+﻿using Core.Entities.Concrete;
+using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.ViewModels.UserVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +12,9 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
-        List<User> GetAllUsers();
-        User GetById(Guid id);
-        IResult CreateUser(User user);
+        IDataResult<List<User>> GetAllUsers();
+        IDataResult<User> GetById(Guid id);
+        IResult UpdateUser(UpdateUserVM updateUserVM);
+        IResult DeleteUser(DeleteUserVM deleteUserVM);
     }
 }

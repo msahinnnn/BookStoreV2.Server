@@ -12,7 +12,7 @@ namespace Entities.Concrete
         public Guid Id { get; set; }
         public string BookName { get; set; }
         public string BookISBN { get; set; }
-        public ICollection<Author> Authors { get; set; }
+        public ICollection<BookAuthor> Authors { get; set; }
         public Guid PublisherId { get; set; }
         public Publisher Publisher { get; set; }
 

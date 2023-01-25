@@ -10,6 +10,6 @@ namespace DataAccess.Abstract
 {
     public interface IAuthorDal : IEntityRepository<Author>
     {
-
+        List<Author> GetAllAuthorsDetails();
     }
 }

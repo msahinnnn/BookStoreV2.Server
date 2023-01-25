@@ -10,8 +10,7 @@ namespace Entities.Concrete
     public class Author : IBaseEntity
     {
         public Guid Id { get; set; }
-
         public string AuthorName { get; set; }
-        public ICollection<Book> Books { get; set; }
+        public ICollection<BookAuthor> Books { get; set; }
     }
 }

@@ -10,5 +10,7 @@ namespace DataAccess.Abstract
 {
     public interface IPublisherDal : IEntityRepository<Publisher>
     {
+        List<Publisher> GetAllPublishersDetails();
+
     }
 }

@@ -1,7 +1,8 @@
-﻿using Core.EntityFramework;
+﻿using Core.Entities.Concrete;
+using Core.EntityFramework;
 using DataAccess.Abstract;
 using Entities.Concrete;
-using Entities.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,21 +14,19 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfUserDal : EfEntityRepositoryBase<User, BookStoreDbContext>, IUserDal
     {
-        public List<UserDetailDto> GetUserDetails()
+        public List<User> GetAllUsersDetails()
         {
-            using(BookStoreDbContext context = new BookStoreDbContext())
+            using (BookStoreDbContext context = new BookStoreDbContext())
             {
-                var result = from a in context.Authors
-                             join b in context.Books
-                             on a.Id equals b.Id
-                             select new UserDetailDto
-                             {
-                                 UserId= a.Id,
-                                 UserFirstName = a.AuthorName,
-                                 UserLastName = b.BookName,
-                                 UserEmail = b.BookISBN
-                             };
-                return result.ToList();
+                List<User>? result = context.Users.ToList();
+                if (result != null)
+                {
+                    return result;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
     }
