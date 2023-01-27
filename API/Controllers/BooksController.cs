@@ -43,7 +43,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
-        //[Authorize(Roles = "Admin, Standard")]
+        [Authorize(Roles = "Admin, Standard")]
         [HttpGet("books-detailed")]
         public IActionResult GetDetail()
         {
@@ -55,7 +55,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Post([FromBody] CreateBookVM createBookVM, Guid authorId)
         {
