@@ -35,17 +35,17 @@ namespace DataAccess.Concrete.EntityFramework
                 .HasForeignKey(fo => fo.PublisherId);
 
             modelBuilder.Entity<BookAuthor>()
-           .HasKey(ky => new { ky.BookId, ky.AuthorId });
+            .HasKey(ba => new { ba.AuthorId, ba.BookId });
 
             modelBuilder.Entity<BookAuthor>()
-                .HasOne(ky => ky.Book)
-                .WithMany(k => k.Authors)
-                .HasForeignKey(ky => ky.BookId);
+                .HasOne(ba => ba.Book)
+                .WithMany(b => b.Authors)
+                .HasForeignKey(ba => ba.BookId);
 
             modelBuilder.Entity<BookAuthor>()
-                .HasOne(ky => ky.Author)
-                .WithMany(y => y.Books)
-                .HasForeignKey(ky => ky.BookId);
+                .HasOne(ba => ba.Author)
+                .WithMany(b => b.Books)
+                .HasForeignKey(ba => ba.AuthorId);
         }
 
 

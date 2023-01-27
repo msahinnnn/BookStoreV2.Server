@@ -1,6 +1,8 @@
 ﻿using Core.EntityFramework;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.ViewModels.Author;
+using Entities.ViewModels.Book;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,16 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfAuthorDal : EfEntityRepositoryBase<Author, BookStoreDbContext>, IAuthorDal
     {
+        public bool AddAuthorToBook(Guid bookId, Author author)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddAuthorWithBooks(Author author, List<Book> book)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Author> GetAllAuthorsDetails()
         {
             using (BookStoreDbContext context = new BookStoreDbContext())

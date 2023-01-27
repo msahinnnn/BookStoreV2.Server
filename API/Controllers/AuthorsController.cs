@@ -43,7 +43,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles = "Admin, Standard")]
+        //[Authorize(Roles = "Admin, Standard")]
         [HttpGet("authors-detailed")]
         public IActionResult GetDetail()
         {
@@ -55,7 +55,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Post([FromBody] CreateAuthorVM createAuthorVM, Guid bookId)
         {
@@ -67,7 +67,19 @@ namespace API.Controllers
             return BadRequest(result.Message);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [HttpPost("add-author-to-book")]
+        public IActionResult PostAuthorToBook([FromBody] CreateAuthorVM createAuthorVM, Guid bookId)
+        {
+            var result = _authorService.AddAuthorToBook(bookId, createAuthorVM);
+            if (result.Success == true)
+            {
+                return Ok(result.Message);
+            }
+            return BadRequest(result.Message);
+        }
+
+        //[Authorize(Roles = "Admin")]
         [HttpDelete]
         public IActionResult Delete([FromBody] DeleteAuthorVM deleteAuthorVM)
         {

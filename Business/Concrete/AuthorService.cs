@@ -20,11 +20,13 @@ namespace Business.Concrete
     public class AuthorService : IAuthorService
     {
         IAuthorDal _authorDal;
+        IBookDal _bookDal;
         IMapper _mapper;
-        public AuthorService(IAuthorDal authorDal, IMapper mappper)
+        public AuthorService(IAuthorDal authorDal, IMapper mappper, IBookDal bookDal)
         {
             _authorDal = authorDal;
             _mapper = mappper;
+            _bookDal = bookDal;
         }
 
         public IResult CreateAuthor(CreateAuthorVM createAuthorVM, Guid bookId)
@@ -37,10 +39,33 @@ namespace Business.Concrete
 
             ValidationTool.Validate(new AuthorValidator(), createAuthorVM);
             Author author = _mapper.Map<Author>(createAuthorVM);
-            author.Books = new HashSet<BookAuthor>() { new() { BookId = bookId} };
             _authorDal.Add(author);
             return new Result(true, "Author added succesfully...");
         }
+
+        public IResult AddAuthorToBook(Guid bookId, CreateAuthorVM createAuthorVM)
+        {
+            IResult check = BusinessRules.Run(CheckIfBookExistsById(bookId));
+            if (check != null)
+            {
+                return new Result(false, "Book not exists!");
+            }
+            ValidationTool.Validate(new AuthorValidator(), createAuthorVM);
+            Author author = _mapper.Map<Author>(createAuthorVM);
+            bool res = _authorDal.AddAuthorToBook(bookId, author);
+            if (res)
+            {
+                return new Result(true, "Author to book added succesfully...");
+            }
+            return new Result(true, "Author to book couldn' t added!");
+        }
+
+        public IResult AddAuthorWithBooks(CreateAuthorVM createAuthorVM, List<CreateBookVM> createBookVMs)
+        {
+            throw new NotImplementedException();
+        }
+
+
 
         public IResult DeleteAuthor(DeleteAuthorVM deleteAuthorVM)
         {
@@ -66,6 +91,7 @@ namespace Business.Concrete
             _authorDal.Update(author);
             return new Result(true, "Author updated succesfully...");
         }
+
 
         public IDataResult<List<Author>> GetAllAuthors()
         {
@@ -103,5 +129,16 @@ namespace Business.Concrete
             return new Result(false, "Author not exists!");
         }
 
+        private IResult CheckIfBookExistsById(Guid id)
+        {
+            var result = _bookDal.GetAll(p => p.Id == id).Any();
+            if (result)
+            {
+                return new Result(true, "Book aldready exists!");
+            }
+            return new Result(false, "Book not exists!");
+        }
+
+        
     }
 }

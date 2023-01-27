@@ -21,11 +21,13 @@ namespace Business.Concrete
     public class BookService : IBookService
     {
         IBookDal _bookDal;
+        IAuthorDal _authorDal;
         IMapper _mapper;
-        public BookService(IBookDal bookDal, IMapper mapper)
+        public BookService(IBookDal bookDal, IMapper mapper, IAuthorDal authorDal)
         {
             _bookDal = bookDal;
             _mapper = mapper;
+            _authorDal = authorDal;
         }
 
         public IResult CreateBook(CreateBookVM createBookVM, Guid authorId)
@@ -40,6 +42,29 @@ namespace Business.Concrete
             book.Authors = new HashSet<BookAuthor>() { new() { AuthorId = authorId } };
             _bookDal.Add(book);
             return new Result(true, "Book added succesfully...");                   
+        }
+
+        public IResult AddBookToAuthor(Guid authorId, CreateBookVM createBookVM)
+        {
+            IResult check = BusinessRules.Run(CheckIfAuthorExistsById(authorId));
+            if (check != null)
+            {
+                return new Result(false, "Author not exists!");
+            }
+            ValidationTool.Validate(new BookValidator(), createBookVM);
+            Book book = _mapper.Map<Book>(createBookVM);
+            book.Id = Guid.NewGuid();
+            bool res = _bookDal.AddBookToAuthor(authorId, book);
+            if (res)
+            {
+                return new Result(true, "Book to book added succesfully...");
+            }
+            return new Result(true, "Book to book couldn' t added!");
+        }
+
+        public IResult AddBookWithAuthors(CreateBookVM createBookVM, List<CreateAuthorVM> createAuthorVMs)
+        {
+            throw new NotImplementedException();
         }
 
         public IResult DeleteBook(DeleteBookVM deleteBookVM)
@@ -103,6 +128,16 @@ namespace Business.Concrete
             return new Result(false, "Book not exists!");
         }
 
-        
+        private IResult CheckIfAuthorExistsById(Guid id)
+        {
+            var result = _authorDal.GetAll(p => p.Id == id).Any();
+            if (result)
+            {
+                return new Result(true, "Book aldready exists!");
+            }
+            return new Result(false, "Book not exists!");
+        }
+
+
     }
 }

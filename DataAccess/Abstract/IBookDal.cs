@@ -1,5 +1,7 @@
 ﻿using Core.DataAccess;
 using Entities.Concrete;
+using Entities.ViewModels.Author;
+using Entities.ViewModels.Book;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +13,7 @@ namespace DataAccess.Abstract
     public interface IBookDal : IEntityRepository<Book>
     {
         List<Book> GetAllBooksDetailDetails();
+        bool AddBookToAuthor(Guid authorId, Book book);
+        bool AddBookWithAuthors(Book book, List<Author> authors);
     }
 }
