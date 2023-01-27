@@ -27,7 +27,7 @@ namespace Business.Concrete
             _mapper = mappper;
         }
 
-        public IResult CreateAuthor(CreateAuthorVM createAuthorVM)
+        public IResult CreateAuthor(CreateAuthorVM createAuthorVM, Guid bookId)
         {
             IResult check = BusinessRules.Run(CheckIfAuthorExists(createAuthorVM.AuthorName));
             if (check != null)
@@ -37,6 +37,7 @@ namespace Business.Concrete
 
             ValidationTool.Validate(new AuthorValidator(), createAuthorVM);
             Author author = _mapper.Map<Author>(createAuthorVM);
+            author.Books = new HashSet<BookAuthor>() { new() { BookId = bookId} };
             _authorDal.Add(author);
             return new Result(true, "Author added succesfully...");
         }

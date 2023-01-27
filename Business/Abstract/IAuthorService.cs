@@ -14,7 +14,7 @@ namespace Business.Abstract
         IDataResult<List<Author>> GetAllAuthors();
         IDataResult<Author> GetById(Guid id);
         IDataResult<List<Author>> GetAllAuthorsDetail();
-        IResult CreateAuthor(CreateAuthorVM createAuthorVM);
+        IResult CreateAuthor(CreateAuthorVM createAuthorVM, Guid bookId);
         IResult DeleteAuthor(DeleteAuthorVM deleteAuthorVM);
         IResult UpdateAuthor(UpdateAuthorVM updateAuthorVM);
     }

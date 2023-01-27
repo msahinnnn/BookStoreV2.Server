@@ -43,7 +43,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles = "Admin, Standard")]
+        //[Authorize(Roles = "Admin, Standard")]
         [HttpGet("authors-detailed")]
         public IActionResult GetDetail()
         {
@@ -55,11 +55,11 @@ namespace API.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Post([FromBody] CreateAuthorVM createAuthorVM)
+        public IActionResult Post([FromBody] CreateAuthorVM createAuthorVM, Guid bookId)
         {
-            var result = _authorService.CreateAuthor(createAuthorVM);
+            var result = _authorService.CreateAuthor(createAuthorVM, bookId);
             if (result.Success == true)
             {
                 return Ok(result.Message);

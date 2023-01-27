@@ -14,7 +14,7 @@ namespace Business.Abstract
         IDataResult<List<Book>> GetAllBooks();
         IDataResult<Book> GetById(Guid id);
         IDataResult<List<Book>> GetAllBooksDetail();
-        IResult CreateBook(CreateBookVM createBookVM);
+        IResult CreateBook(CreateBookVM createBookVM, Guid authorId);
         IResult DeleteBook(DeleteBookVM deleteBookVM);
         IResult UpdateBook(UpdateBookVM updateBookVM);
     }

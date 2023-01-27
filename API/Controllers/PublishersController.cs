@@ -55,7 +55,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Post([FromBody] CreatePublisherVM createPublisherVM)
         {

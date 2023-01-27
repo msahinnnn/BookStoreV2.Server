@@ -17,7 +17,7 @@ namespace DataAccess.Concrete.EntityFramework
         {
             using (BookStoreDbContext context = new BookStoreDbContext())
             {
-                List<Book>? result = context.Books.Include(b => b.Authors).ToList();
+                List<Book>? result = context.Books.Include(b => b.Authors.Where(a => a.BookId == a.BookId)).ToList();
                 if (result != null)
                 {
                     return result;

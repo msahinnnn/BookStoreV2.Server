@@ -12,6 +12,7 @@ using Entities.ViewModels.Book;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace Business.Concrete
             _mapper = mapper;
         }
 
-        public IResult CreateBook(CreateBookVM createBookVM)
+        public IResult CreateBook(CreateBookVM createBookVM, Guid authorId)
         {
             IResult check = BusinessRules.Run(CheckIfBookExists(createBookVM.BookISBN));
             if (check != null)
@@ -36,6 +37,7 @@ namespace Business.Concrete
             }
             ValidationTool.Validate(new BookValidator(), createBookVM);
             Book book = _mapper.Map<Book>(createBookVM);
+            book.Authors = new HashSet<BookAuthor>() { new() { AuthorId = authorId } };
             _bookDal.Add(book);
             return new Result(true, "Book added succesfully...");                   
         }
@@ -100,5 +102,7 @@ namespace Business.Concrete
             }
             return new Result(false, "Book not exists!");
         }
+
+        
     }
 }

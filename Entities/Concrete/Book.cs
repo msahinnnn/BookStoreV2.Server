@@ -9,6 +9,10 @@ namespace Entities.Concrete
 {
     public class Book : IBaseEntity
     {
+        public Book()
+        {
+            Authors = new HashSet<BookAuthor>();
+        }
         public Guid Id { get; set; }
         public string BookName { get; set; }
         public string BookISBN { get; set; }

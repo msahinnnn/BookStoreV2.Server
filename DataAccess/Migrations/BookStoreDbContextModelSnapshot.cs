@@ -135,6 +135,9 @@ namespace DataAccess.Migrations
                     b.Property<Guid>("AuthorId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("BookId", "AuthorId");
 
                     b.ToTable("BookAuthor");
