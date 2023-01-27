@@ -9,7 +9,7 @@ namespace Entities.Concrete
 {
     public class Action : IBaseEntity
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string ActionDescription { get; set; }
     }
 }

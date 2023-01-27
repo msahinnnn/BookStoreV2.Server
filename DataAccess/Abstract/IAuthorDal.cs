@@ -14,6 +14,5 @@ namespace DataAccess.Abstract
     {
         List<Author> GetAllAuthorsDetails();
         bool AddAuthorToBook(Guid bookId, Author author);
-        bool AddAuthorWithBooks(Author author, List<Book> book);
     }
 }

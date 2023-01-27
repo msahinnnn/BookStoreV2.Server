@@ -62,10 +62,6 @@ namespace Business.Concrete
             return new Result(true, "Book to book couldn' t added!");
         }
 
-        public IResult AddBookWithAuthors(CreateBookVM createBookVM, List<CreateAuthorVM> createAuthorVMs)
-        {
-            throw new NotImplementedException();
-        }
 
         public IResult DeleteBook(DeleteBookVM deleteBookVM)
         {

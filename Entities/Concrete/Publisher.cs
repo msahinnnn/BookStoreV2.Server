@@ -9,7 +9,7 @@ namespace Entities.Concrete
 {
     public class Publisher : IBaseEntity
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string PublisherName { get; set;}
         public ICollection<Book> Books { get; set; }
 

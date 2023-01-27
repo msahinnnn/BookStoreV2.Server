@@ -1,4 +1,5 @@
-﻿using Core.EntityFramework;
+﻿using Core.Entities.Concrete;
+using Core.EntityFramework;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.ViewModels.Author;
@@ -24,12 +25,10 @@ namespace DataAccess.Concrete.EntityFramework
                 Author? author = context.Authors.FirstOrDefault(x => x.Id == authorId);
                 if (author != null)
                 {
-
                     book.Authors = new HashSet<BookAuthor>()
                     {
                         new(){AuthorId = authorId}
                     };
-
                     context.Add(book);
                     context.SaveChanges();
                     return true;
@@ -41,41 +40,20 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        public bool AddBookWithAuthors(Book book, List<Author> authors)
-        {
-            using (BookStoreDbContext context = new BookStoreDbContext())
-            {
-                Book? newBook = context.Books.FirstOrDefault(x => x.BookISBN == book.BookISBN);
-                if (newBook != null)
-                {
-                    foreach(Author aut in authors)
-                    {
-                        newBook.Authors = new HashSet<BookAuthor>() { new() { Author = aut } };
-                    }
-                    context.SaveChanges();
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
+
 
         public List<Book> GetAllBooksDetailDetails()
         {
-            using (BookStoreDbContext context = new BookStoreDbContext())
+            using (var context = new BookStoreDbContext())
             {
-                List<Book>? result = context.Books.Include(b => b.Authors.Where(a => a.BookId == a.BookId)).ToList();
-                if (result != null)
-                {
-                    return result;
-                }
-                else
-                {
-                    return null;
-                }
+                var query = context.Books
+                      .Include(author => author.Authors)
+                      .ThenInclude(a => a.Author).ToList();
+                return query;
+
             }
+
+
         }
     }
 }

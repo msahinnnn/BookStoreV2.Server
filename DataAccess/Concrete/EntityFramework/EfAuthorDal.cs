@@ -17,27 +17,36 @@ namespace DataAccess.Concrete.EntityFramework
     {
         public bool AddAuthorToBook(Guid bookId, Author author)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool AddAuthorWithBooks(Author author, List<Book> book)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Author> GetAllAuthorsDetails()
-        {
             using (BookStoreDbContext context = new BookStoreDbContext())
             {
-                List<Author>? result = context.Authors.Include(b => b.Books).ToList();
-                if (result != null)
+                Book? book = context.Books.FirstOrDefault(x => x.Id == bookId);
+                if (author != null)
                 {
-                    return result;
+                    author.Books = new HashSet<BookAuthor>()
+                    {
+                        new(){BookId = bookId}
+                    };
+                    context.Add(author);
+                    context.SaveChanges();
+                    return true;
                 }
                 else
                 {
-                    return null;
+                    return false;
                 }
+            }
+        }
+
+
+        public List<Author> GetAllAuthorsDetails()
+        {
+            using (var context = new BookStoreDbContext())
+            {
+                var query = context.Authors
+                      .Include(author => author.Books)
+                      .ThenInclude(a => a.Book).ToList();
+                return query;
+
             }
         }
 

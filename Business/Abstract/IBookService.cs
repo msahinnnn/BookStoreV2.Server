@@ -17,7 +17,6 @@ namespace Business.Abstract
         IDataResult<List<Book>> GetAllBooksDetail();
         IResult CreateBook(CreateBookVM createBookVM, Guid authorId);
         IResult AddBookToAuthor(Guid authorId, CreateBookVM createBookVM);
-        IResult AddBookWithAuthors(CreateBookVM createBookVM, List<CreateAuthorVM> createAuthorVMs);
         IResult DeleteBook(DeleteBookVM deleteBookVM);
         IResult UpdateBook(UpdateBookVM updateBookVM);
     }

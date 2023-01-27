@@ -13,7 +13,7 @@ namespace Entities.Concrete
         {
             Books = new HashSet<BookAuthor>();
         }
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string AuthorName { get; set; }
         public ICollection<BookAuthor> Books { get; set; }
     }
