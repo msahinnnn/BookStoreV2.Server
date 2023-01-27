@@ -12,7 +12,7 @@ namespace DataAccess.Abstract
 {
     public interface IAuthorDal : IEntityRepository<Author>
     {
-        List<Author> GetAllAuthorsDetails();
-        bool AddAuthorToBook(Guid bookId, Author author);
+        Task<List<Author>> GetAllAuthorsDetails();
+        Task<bool> AddAuthorToBook(Guid bookId, Author author);
     }
 }

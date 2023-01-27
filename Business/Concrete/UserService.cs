@@ -20,12 +20,7 @@ namespace Business.Concrete
 {
     public class UserService : IUserService
     {
-        //InMemoryUserDal _inMemoryUserDal;
 
-        //public UserManager(InMemoryUserDal inMemoryUserDal)
-        //{
-        //    _inMemoryUserDal = inMemoryUserDal;
-        //}
         IUserDal _userDal;
 
         public UserService(IUserDal userDal)
@@ -33,38 +28,40 @@ namespace Business.Concrete
             _userDal = userDal;
         }
 
-        public IResult DeleteUser(DeleteUserVM deleteUserVM)
+        public async Task<IResult> DeleteUser(DeleteUserVM deleteUserVM)
         {
             throw new NotImplementedException();
         }
 
-        public IDataResult<List<User>> GetAllUsers()
+        public async Task<IDataResult<List<User>>> GetAllUsers()
         {
-            return new DataResult<List<User>>(_userDal.GetAll(), true, "Users listed...");
+            var res = await _userDal.GetAll();
+            return new DataResult<List<User>>(res, true, "Users listed...");
         }
 
-        public IDataResult<User> GetById(Guid id)
+        public async Task<IDataResult<User>> GetById(Guid id)
         {
-            return new DataResult<User>(_userDal.GetById(u => u.Id == id), true, "User by id...");
+            var res = await _userDal.GetById(u => u.Id == id);
+            return new DataResult<User>(res, true, "User by id...");
         }
 
-        public void AddUser(User user)
+        public async void AddUser(User user)
         {
             _userDal.Add(user);
         }
-        public IResult UpdateUser(UpdateUserVM UpdateUserVM)
+        public Task<IResult> UpdateUser(UpdateUserVM UpdateUserVM)
         {
             throw new NotImplementedException();
         }
 
-        public List<OperationClaim> GetClaims(User user)
+        public async Task<List<OperationClaim>> GetClaims(User user)
         {
-            return _userDal.GetClaims(user);
+            return await _userDal.GetClaims(user);
         }
 
-        public User GetByMail(string email)
+        public async Task<User> GetByMail(string email)
         {
-            return _userDal.Get(u => u.Email == email);
+            return await _userDal.Get(u => u.Email == email);
         }
 
         

@@ -11,11 +11,11 @@ namespace Business.Abstract
 {
     public interface IPublisherService
     {
-        IDataResult<List<Publisher>> GetAllPublishers();
-        IDataResult<Publisher> GetById(Guid id);
-        IDataResult<List<Publisher>> GetAllPublishersDetail();
-        IResult CreatePublisher(CreatePublisherVM createPublisherVM);
-        IResult DeletePublisher(DeletePublisherVM deletePublisherVM);
-        IResult UpdatePublisher(UpdatePublisherVM updatePublisherVM);
+        Task<IDataResult<List<Publisher>>> GetAllPublishers();
+        Task<IDataResult<Publisher>> GetById(Guid id);
+        Task<IDataResult<List<Publisher>>> GetAllPublishersDetail();
+        Task<IResult> CreatePublisher(CreatePublisherVM createPublisherVM);
+        Task<IResult> DeletePublisher(DeletePublisherVM deletePublisherVM);
+        Task<IResult> UpdatePublisher(UpdatePublisherVM updatePublisherVM);
     }
 }

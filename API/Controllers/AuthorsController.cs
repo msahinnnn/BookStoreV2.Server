@@ -22,9 +22,9 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin, Standard")]
         [HttpGet("authors")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var result = _authorService.GetAllAuthors();
+            var result = await _authorService.GetAllAuthors();
             if (result != null)
             {
                 return Ok(result);
@@ -34,9 +34,9 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin, Standard")]
         [HttpGet("author/{id}")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            var result = _authorService.GetById(id);
+            var result = await _authorService.GetById(id);
             if (result != null)
             {
                 return Ok(result);
@@ -46,9 +46,9 @@ namespace API.Controllers
 
         //[Authorize(Roles = "Admin, Standard")]
         [HttpGet("authors-detailed")]
-        public IActionResult GetDetail()
+        public async Task<IActionResult> GetDetail()
         {
-            var result = _authorService.GetAllAuthorsDetail();
+            var result = await _authorService.GetAllAuthorsDetail();
             if (result != null)
             {
                 return Ok(result);
@@ -58,9 +58,9 @@ namespace API.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Post([FromBody] CreateAuthorVM createAuthorVM, Guid bookId)
+        public async Task<IActionResult> Post([FromBody] CreateAuthorVM createAuthorVM, Guid bookId)
         {
-            var result = _authorService.CreateAuthor(createAuthorVM, bookId);
+            var result = await _authorService.CreateAuthor(createAuthorVM, bookId);
             if (result.Success == true)
             {
                 return Ok(result.Message);
@@ -70,9 +70,9 @@ namespace API.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpPost("add-author-to-book")]
-        public IActionResult PostAuthorToBook([FromBody] CreateAuthorVM createAuthorVM, Guid bookId)
+        public async Task<IActionResult> PostAuthorToBook([FromBody] CreateAuthorVM createAuthorVM, Guid bookId)
         {
-            var result = _authorService.AddAuthorToBook(bookId, createAuthorVM);
+            var result = await _authorService.AddAuthorToBook(bookId, createAuthorVM);
             if (result.Success == true)
             {
                 return Ok(result.Message);
@@ -84,9 +84,9 @@ namespace API.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpDelete]
-        public IActionResult Delete([FromBody] DeleteAuthorVM deleteAuthorVM)
+        public async Task<IActionResult> Delete([FromBody] DeleteAuthorVM deleteAuthorVM)
         {
-            var result = _authorService.DeleteAuthor(deleteAuthorVM);
+            var result = await _authorService.DeleteAuthor(deleteAuthorVM);
             if (result.Success == true)
             {
                 return Ok(result.Message);
@@ -96,9 +96,9 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut]
-        public IActionResult Update([FromBody] UpdateAuthorVM updateAuthorVM)
+        public async Task<IActionResult> Update([FromBody] UpdateAuthorVM updateAuthorVM)
         {
-            var result = _authorService.UpdateAuthor(updateAuthorVM);
+            var result = await _authorService.UpdateAuthor(updateAuthorVM);
             if (result.Success == true)
             {
                 return Ok(result.Message);

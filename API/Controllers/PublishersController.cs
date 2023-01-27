@@ -21,9 +21,9 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin, Standard")]
         [HttpGet("publishers")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var result = _publisherService.GetAllPublishers();
+            var result = await _publisherService.GetAllPublishers();
             if (result != null)
             {
                 return Ok(result);
@@ -33,9 +33,9 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin, Standard")]
         [HttpGet("publisher/{id}")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            var result = _publisherService.GetById(id);
+            var result = await _publisherService.GetById(id);
             if (result != null)
             {
                 return Ok(result);
@@ -45,9 +45,9 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin, Standard")]
         [HttpGet("publishers-detailed")]
-        public IActionResult GetDetail()
+        public async Task<IActionResult> GetDetail()
         {
-            var result = _publisherService.GetAllPublishersDetail();
+            var result = await _publisherService.GetAllPublishersDetail();
             if (result != null)
             {
                 return Ok(result);
@@ -57,9 +57,9 @@ namespace API.Controllers
 
         //[Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Post([FromBody] CreatePublisherVM createPublisherVM)
+        public async Task<IActionResult> Post([FromBody] CreatePublisherVM createPublisherVM)
         {
-            var result = _publisherService.CreatePublisher(createPublisherVM);
+            var result = await _publisherService.CreatePublisher(createPublisherVM);
             if (result.Success == true)
             {
                 return Ok(result.Message);
@@ -69,9 +69,9 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpDelete]
-        public IActionResult Delete([FromBody] DeletePublisherVM deletePublisherVM)
+        public async Task<IActionResult> Delete([FromBody] DeletePublisherVM deletePublisherVM)
         {
-            var result = _publisherService.DeletePublisher(deletePublisherVM);
+            var result = await _publisherService.DeletePublisher(deletePublisherVM);
             if (result.Success == true)
             {
                 return Ok(result.Message);
@@ -81,9 +81,9 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut]
-        public IActionResult Update([FromBody] UpdatePublisherVM updatePublisherVM)
+        public async Task<IActionResult> Update([FromBody] UpdatePublisherVM updatePublisherVM)
         {
-            var result = _publisherService.UpdatePublisher(updatePublisherVM);
+            var result = await _publisherService.UpdatePublisher(updatePublisherVM);
             if (result.Success == true)
             {
                 return Ok(result.Message);

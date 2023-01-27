@@ -12,12 +12,12 @@ namespace Business.Abstract
 {
     public interface IBookService
     {
-        IDataResult<List<Book>> GetAllBooks();
-        IDataResult<Book> GetById(Guid id);
-        IDataResult<List<Book>> GetAllBooksDetail();
-        IResult CreateBook(CreateBookVM createBookVM, Guid authorId);
-        IResult AddBookToAuthor(Guid authorId, CreateBookVM createBookVM);
-        IResult DeleteBook(DeleteBookVM deleteBookVM);
-        IResult UpdateBook(UpdateBookVM updateBookVM);
+        Task<IDataResult<List<Book>>> GetAllBooks();
+        Task<IDataResult<Book>> GetById(Guid id);
+        Task<IDataResult<List<Book>>> GetAllBooksDetail();
+        Task<IResult> CreateBook(CreateBookVM createBookVM, Guid authorId);
+        Task<IResult> AddBookToAuthor(Guid authorId, CreateBookVM createBookVM);
+        Task<IResult> DeleteBook(DeleteBookVM deleteBookVM);
+        Task<IResult> UpdateBook(UpdateBookVM updateBookVM);
     }
 }

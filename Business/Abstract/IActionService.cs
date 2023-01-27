@@ -12,6 +12,6 @@ namespace Business.Abstract
     public interface IActionService
     {
         void CreateAction(string description);
-        IDataResult<List<Entities.Concrete.Action>> GetAllActions();
+        Task<IDataResult<List<Entities.Concrete.Action>>> GetAllActions();
     }
 }

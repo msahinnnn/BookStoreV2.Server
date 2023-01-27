@@ -19,9 +19,9 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet("users")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var result = _userService.GetAllUsers();
+            var result = await _userService.GetAllUsers();
             if (result != null)
             {
                 return Ok(result);
@@ -31,9 +31,9 @@ namespace API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet("user/{id}")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            var result = _userService.GetById(id);
+            var result = await _userService.GetById(id);
             if (result != null)
             {
                 return Ok(result);

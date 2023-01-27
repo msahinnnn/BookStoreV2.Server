@@ -19,7 +19,7 @@ namespace Business.Concrete
             _actionDal = actionDal;
         }
 
-        public void CreateAction(string description)
+        public async void CreateAction(string description)
         {
             Entities.Concrete.Action action = new Entities.Concrete.Action()
             {
@@ -29,9 +29,10 @@ namespace Business.Concrete
             _actionDal.Add(action);
         }
 
-        public IDataResult<List<Entities.Concrete.Action>> GetAllActions()
+        public async Task<IDataResult<List<Entities.Concrete.Action>>> GetAllActions()
         {
-            return new DataResult<List<Entities.Concrete.Action>>(_actionDal.GetAll(), true, "User login/register actions listed...");
+            var res = await _actionDal.GetAll();
+            return new DataResult<List<Entities.Concrete.Action>>(res, true, "User login/register actions listed...");
         }
     }
 }

@@ -13,11 +13,11 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfPublisherDal : EfEntityRepositoryBase<Publisher, BookStoreDbContext>, IPublisherDal
     {
-        public List<Publisher> GetAllPublishersDetails()
+        public async Task<List<Publisher>> GetAllPublishersDetails()
         {
             using (BookStoreDbContext context = new BookStoreDbContext())
             {
-                List<Publisher>? result = context.Publishers.Include(b => b.Books).ToList();
+                List<Publisher>? result = await context.Publishers.Include(b => b.Books).ToListAsync();
                 if (result != null)
                 {
                     return result;

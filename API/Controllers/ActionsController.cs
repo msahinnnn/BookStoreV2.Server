@@ -16,9 +16,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var result = _actionService.GetAllActions();
+            var result = await _actionService.GetAllActions();
             return Ok(result.Data);
         }
     }

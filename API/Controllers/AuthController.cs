@@ -17,15 +17,15 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
-        public ActionResult Login(LoginUserVM loginUserVM)
+        public async Task<ActionResult> Login(LoginUserVM loginUserVM)
         {
-            var userToLogin = _authService.Login(loginUserVM);
+            var userToLogin = await _authService.Login(loginUserVM);
             if (!userToLogin.Success)
             {
                 return BadRequest(userToLogin.Message);
             }
 
-            var result = _authService.CreateAccessToken(userToLogin.Data);
+            var result = await _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
                 return Ok(result.Data);
@@ -35,16 +35,16 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult Register(CreateUserVM createUserVM)
+        public async Task<ActionResult> Register(CreateUserVM createUserVM)
         {
-            var userExists = _authService.UserExists(createUserVM.Email);
+            var userExists = await _authService.UserExists(createUserVM.Email);
             if (!userExists.Success)
             {
                 return BadRequest(userExists.Message);
             }
 
-            var registerResult = _authService.Register(createUserVM, createUserVM.Password);
-            var result = _authService.CreateAccessToken(registerResult.Data);
+            var registerResult = await _authService.Register(createUserVM, createUserVM.Password);
+            var result = await _authService.CreateAccessToken(registerResult.Data);
             if (result.Success)
             {
                 return Ok(result.Data);

@@ -12,7 +12,7 @@ namespace DataAccess.Abstract
 {
     public interface IBookDal : IEntityRepository<Book>
     {
-        List<Book> GetAllBooksDetailDetails();
-        bool AddBookToAuthor(Guid authorId, Book book);
+        Task<List<Book>> GetAllBooksDetailDetails();
+        Task<bool> AddBookToAuthor(Guid authorId, Book book);
     }
 }

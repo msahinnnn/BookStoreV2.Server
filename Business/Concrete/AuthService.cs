@@ -25,10 +25,10 @@ namespace Business.Concrete
             _actionService = actionService;
         }
 
-        public IDataResult<User> Login(LoginUserVM loginUserVM)
+        public async Task<IDataResult<User>> Login(LoginUserVM loginUserVM)
         {
-            var userToCheck = _userService.GetByMail(loginUserVM.Email);
-            if (userToCheck == null)
+            var userToCheck = await _userService.GetByMail(loginUserVM.Email);
+            if (userToCheck is null)
             {
                 return new DataResult<User>(userToCheck, false, "User not exists!");
             }
@@ -42,7 +42,7 @@ namespace Business.Concrete
             return new DataResult<User>(userToCheck, true,"Login succesfull...");
         }
 
-        public IDataResult<User> Register(CreateUserVM createUserVM, string password)
+        public async Task<IDataResult<User>> Register(CreateUserVM createUserVM, string password)
         {
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -60,18 +60,19 @@ namespace Business.Concrete
             return new DataResult<User>(user,true ,"Register successfull...");
         }
 
-        public IResult UserExists(string email)
+        public async Task<IResult> UserExists(string email)
         {
-            if (_userService.GetByMail(email) != null)
+            var res = await _userService.GetByMail(email);
+            if ( res is not null)
             {
                 return new Result(false,"User already exists!");
             }
             return new Result(true, "User not exists...");
         }
 
-        public IDataResult<AccessToken> CreateAccessToken(User user)
+        public async Task<IDataResult<AccessToken>> CreateAccessToken(User user)
         {
-            var claims = _userService.GetClaims(user);
+            var claims =  await _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims);
             return new DataResult<AccessToken>(accessToken, true, "Token created");
         }

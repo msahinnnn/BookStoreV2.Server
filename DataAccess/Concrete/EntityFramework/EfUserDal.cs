@@ -14,14 +14,14 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfUserDal : EfEntityRepositoryBase<User, BookStoreDbContext>, IUserDal
     {
-        public List<User> GetAllUsersDetails()
+        public async Task<List<User>> GetAllUsersDetails()
         {
             using (BookStoreDbContext context = new BookStoreDbContext())
             {
-                List<User>? result = context.Users.ToList();
+                List<User>? result = await context.Users.ToListAsync();
                 if (result != null)
                 {
-                    return result;
+                    return await context.Users.ToListAsync();
                 }
                 else
                 {
@@ -30,7 +30,7 @@ namespace DataAccess.Concrete.EntityFramework
             }
         }
 
-        public List<OperationClaim> GetClaims(User user)
+        public async Task<List<OperationClaim>> GetClaims(User user)
         {
             using (BookStoreDbContext context = new BookStoreDbContext())
             {
@@ -40,7 +40,7 @@ namespace DataAccess.Concrete.EntityFramework
                                  on operationClaim.Id equals userOperationClaim.OperationClaimId
                              where userOperationClaim.UserId == user.Id
                              select new OperationClaim {Name = operationClaim.Name };
-                return result.ToList();
+                return await result.ToListAsync();
 
             }
         }

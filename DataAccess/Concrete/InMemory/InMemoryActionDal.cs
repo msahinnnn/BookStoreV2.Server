@@ -15,56 +15,56 @@ namespace DataAccess.Concrete.InMemory
 {
     public class InMemoryActionDal : IInMemoryActionDal
     {
-        public void Add(Entities.Concrete.Action entity)
+        public async void Add(Entities.Concrete.Action entity)
         {
             using (ActionInMemoryDatabase context = new ActionInMemoryDatabase())
             {
                 var addedEntity = context.Entry(entity);
                 addedEntity.State = EntityState.Added;
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
 
-        public void Update(Entities.Concrete.Action entity)
+        public async void Update(Entities.Concrete.Action entity)
         {
             using (ActionInMemoryDatabase context = new ActionInMemoryDatabase())
             {
                 var updatedEntity = context.Entry(entity);
                 updatedEntity.State = EntityState.Modified;
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
-        public void Delete(Entities.Concrete.Action entity)
+        public async void Delete(Entities.Concrete.Action entity)
         {
             using (ActionInMemoryDatabase context = new ActionInMemoryDatabase())
             {
                 var deletedEntity = context.Entry(entity);
                 deletedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
 
-        public Entities.Concrete.Action Get(Expression<Func<Entities.Concrete.Action, bool>> filter)
+        public async Task<Entities.Concrete.Action> Get(Expression<Func<Entities.Concrete.Action, bool>> filter)
         {
             using (ActionInMemoryDatabase context = new ActionInMemoryDatabase())
             {
-                return context.Set<Entities.Concrete.Action>().SingleOrDefault(filter);
+                return await context.Set<Entities.Concrete.Action>().SingleOrDefaultAsync(filter);
             }
         }
 
-        public List<Entities.Concrete.Action> GetAll(Expression<Func<Entities.Concrete.Action, bool>> filter = null)
+        public async Task<List<Entities.Concrete.Action>> GetAll(Expression<Func<Entities.Concrete.Action, bool>> filter = null)
         {
             using (ActionInMemoryDatabase context = new ActionInMemoryDatabase())
             {
-                return filter == null ? context.Set<Entities.Concrete.Action>().ToList() : context.Set<Entities.Concrete.Action>().Where(filter).ToList();
+                return filter == null ? await context.Set<Entities.Concrete.Action>().ToListAsync() : await context.Set<Entities.Concrete.Action>().Where(filter).ToListAsync();
             }
         }
 
-        public Entities.Concrete.Action GetById(Expression<Func<Entities.Concrete.Action, bool>> filter)
+        public async Task<Entities.Concrete.Action> GetById(Expression<Func<Entities.Concrete.Action, bool>> filter)
         {
             using (ActionInMemoryDatabase context = new ActionInMemoryDatabase())
             {
-                return context.Set<Entities.Concrete.Action>().SingleOrDefault(filter);
+                return await context.Set<Entities.Concrete.Action>().SingleOrDefaultAsync(filter);
             }
         }
 

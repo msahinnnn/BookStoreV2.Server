@@ -30,9 +30,9 @@ namespace Business.Concrete
             _bookDal = bookDal;
         }
 
-        public IResult CreateAuthor(CreateAuthorVM createAuthorVM, Guid bookId)
+        public async Task<IResult> CreateAuthor(CreateAuthorVM createAuthorVM, Guid bookId)
         {
-            IResult check = BusinessRules.Run(CheckIfAuthorExists(createAuthorVM.AuthorName));
+            IResult check = BusinessRules.Run(await CheckIfAuthorExists(createAuthorVM.AuthorName));
             if (check != null)
             {
                 return new Result(false, "Author couldn' t added!");
@@ -44,16 +44,16 @@ namespace Business.Concrete
             return new Result(true, "Author added succesfully...");
         }
 
-        public IResult AddAuthorToBook(Guid bookId, CreateAuthorVM createAuthorVM)
+        public async Task<IResult> AddAuthorToBook(Guid bookId, CreateAuthorVM createAuthorVM)
         {
-            IResult check = BusinessRules.Run(CheckIfBookExistsById(bookId));
+            IResult check = BusinessRules.Run(await CheckIfBookExistsById(bookId));
             if (check != null)
             {
                 return new Result(false, "Book not exists!");
             }
             ValidationTool.Validate(new AuthorValidator(), createAuthorVM);
             Author author = _mapper.Map<Author>(createAuthorVM);
-            bool res = _authorDal.AddAuthorToBook(bookId, author);
+            bool res = await _authorDal.AddAuthorToBook(bookId, author);
             if (res)
             {
                 return new Result(true, "Author to book added succesfully...");
@@ -62,72 +62,75 @@ namespace Business.Concrete
         }
 
 
-        public IResult DeleteAuthor(DeleteAuthorVM deleteAuthorVM)
+        public async Task<IResult> DeleteAuthor(DeleteAuthorVM deleteAuthorVM)
         {
-            IResult check = BusinessRules.Run(CheckIfAuthorExistsById(deleteAuthorVM.Id));
+            IResult check = BusinessRules.Run(await CheckIfAuthorExistsById(deleteAuthorVM.Id));
             if (check != null)
             {
                 return new Result(false, "Author couldn' t deleted!");
             }
-            Author author = _authorDal.GetById(a => a.Id == deleteAuthorVM.Id);
+            Author author = await _authorDal.GetById(a => a.Id == deleteAuthorVM.Id);
             _authorDal.Delete(author);
             return new Result(true, "Author deleted succesfully...");
         }
 
-        public IResult UpdateAuthor(UpdateAuthorVM updateAuthorVM)
+        public async Task<IResult> UpdateAuthor(UpdateAuthorVM updateAuthorVM)
         {
-            IResult check = BusinessRules.Run(CheckIfAuthorExistsById(updateAuthorVM.Id));
+            IResult check = BusinessRules.Run(await CheckIfAuthorExistsById(updateAuthorVM.Id));
             if (check != null)
             {
                 return new Result(false, "Author couldn' t updated!");
             }
-            Author author = _authorDal.GetById(a => a.Id == updateAuthorVM.Id);
+            Author author = await _authorDal.GetById(a => a.Id == updateAuthorVM.Id);
             author.AuthorName = updateAuthorVM.AuthorName;
             _authorDal.Update(author);
             return new Result(true, "Author updated succesfully...");
         }
 
 
-        public IDataResult<List<Author>> GetAllAuthors()
+        public async Task<IDataResult<List<Author>>> GetAllAuthors()
         {
-            return new DataResult<List<Author>>(_authorDal.GetAll(), true, "Authors listed...");
+            var res = await _authorDal.GetAll();
+            return new DataResult<List<Author>>(res, true, "Authors listed...");
         }
 
-        public IDataResult<Author> GetById(Guid id)
+        public async Task<IDataResult<Author>> GetById(Guid id)
         {
-            return new DataResult<Author>(_authorDal.GetById(a => a.Id == id), true, "Author by id...");
+            var res = await _authorDal.GetById(a => a.Id == id);
+            return new DataResult<Author>(res, true, "Author by id...");
         }
 
-        public IDataResult<List<Author>> GetAllAuthorsDetail()
+        public async Task<IDataResult<List<Author>>> GetAllAuthorsDetail()
         {
-            return new DataResult<List<Author>>(_authorDal.GetAllAuthorsDetails(), true, "Authors with detail listed...");
+            var res = await _authorDal.GetAllAuthorsDetails();
+            return new DataResult<List<Author>>(res, true, "Authors with detail listed...");
         }
 
 
-        private IResult CheckIfAuthorExists(string authorName)
+        private async Task<IResult> CheckIfAuthorExists(string authorName)
         {
-            var result = _authorDal.GetAll(p => p.AuthorName == authorName).Any();
-            if (result)
+            var result =  await _authorDal.GetAll(p => p.AuthorName == authorName);
+            if (result is not null)
             {
                 return new Result(false, "Author aldready exists!");
             }
             return new Result(true, "Author not exists!");
         }
 
-        private IResult CheckIfAuthorExistsById(Guid id)
+        private async Task<IResult> CheckIfAuthorExistsById(Guid id)
         {
-            var result = _authorDal.GetAll(p => p.Id == id).Any();
-            if (result)
+            var result = await _authorDal.GetAll(p => p.Id == id);
+            if (result is not null)
             {
                 return new Result(true, "Author aldready exists!");
             }
             return new Result(false, "Author not exists!");
         }
 
-        private IResult CheckIfBookExistsById(Guid id)
+        private async Task<IResult> CheckIfBookExistsById(Guid id)
         {
-            var result = _bookDal.GetAll(p => p.Id == id).Any();
-            if (result)
+            var result = await _bookDal.GetAll(p => p.Id == id);
+            if (result is not null)
             {
                 return new Result(true, "Book aldready exists!");
             }

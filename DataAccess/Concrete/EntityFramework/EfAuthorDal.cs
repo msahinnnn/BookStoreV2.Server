@@ -15,19 +15,19 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfAuthorDal : EfEntityRepositoryBase<Author, BookStoreDbContext>, IAuthorDal
     {
-        public bool AddAuthorToBook(Guid bookId, Author author)
+        public async Task<bool> AddAuthorToBook(Guid bookId, Author author)
         {
             using (BookStoreDbContext context = new BookStoreDbContext())
             {
-                Book? book = context.Books.FirstOrDefault(x => x.Id == bookId);
+                Book? book = await context.Books.FirstOrDefaultAsync(x => x.Id == bookId);
                 if (author != null)
                 {
                     author.Books = new HashSet<BookAuthor>()
                     {
                         new(){BookId = bookId}
                     };
-                    context.Add(author);
-                    context.SaveChanges();
+                    await context.AddAsync(author);
+                    await context.SaveChangesAsync();
                     return true;
                 }
                 else
@@ -38,14 +38,14 @@ namespace DataAccess.Concrete.EntityFramework
         }
 
 
-        public List<Author> GetAllAuthorsDetails()
+        public async Task<List<Author>> GetAllAuthorsDetails()
         {
             using (var context = new BookStoreDbContext())
             {
-                var query = context.Authors
+                var datas = await context.Authors
                       .Include(author => author.Books)
-                      .ThenInclude(a => a.Book).ToList();
-                return query;
+                      .ThenInclude(a => a.Book).ToListAsync();
+                return datas;
 
             }
         }

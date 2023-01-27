@@ -28,9 +28,9 @@ namespace Business.Concrete
             _mapper = mapper;
         }
 
-        public IResult CreatePublisher(CreatePublisherVM createPublisherVM)
+        public async Task<IResult> CreatePublisher(CreatePublisherVM createPublisherVM)
         {
-            IResult check = BusinessRules.Run(CheckIfPublisherExists(createPublisherVM.PublisherName));
+            IResult check = BusinessRules.Run(await CheckIfPublisherExists(createPublisherVM.PublisherName));
             if (check != null)
             {
                 return new Result(false, "Publisher couldn' t added...");
@@ -42,60 +42,63 @@ namespace Business.Concrete
             return new Result(true, "Publisher added succesfully...");
         }
 
-        public IResult DeletePublisher(DeletePublisherVM deletePublisherVM)
+        public async Task<IResult> DeletePublisher(DeletePublisherVM deletePublisherVM)
         {
-            IResult check = BusinessRules.Run(CheckIfPublisherExistsById(deletePublisherVM.Id));
+            IResult check = BusinessRules.Run(await CheckIfPublisherExistsById(deletePublisherVM.Id));
             if (check != null)
             {
                 return new Result(false, "Publisher couldn' t deleted!");
             }
-            Publisher publisher = _publisherDal.GetById(a => a.Id == deletePublisherVM.Id);
+            Publisher publisher = await _publisherDal.GetById(a => a.Id == deletePublisherVM.Id);
             _publisherDal.Delete(publisher);
             return new Result(true, "Publisher deleted succesfully...");
         }
 
-        public IResult UpdatePublisher(UpdatePublisherVM updatePublisherVM)
+        public async Task<IResult> UpdatePublisher(UpdatePublisherVM updatePublisherVM)
         {
-            IResult check = BusinessRules.Run(CheckIfPublisherExistsById(updatePublisherVM.Id));
+            IResult check = BusinessRules.Run(await CheckIfPublisherExistsById(updatePublisherVM.Id));
             if (check != null)
             {
                 return new Result(false, "Book couldn' t updated!");
             }
-            Publisher publisher = _publisherDal.GetById(a => a.Id == updatePublisherVM.Id);
+            Publisher publisher = await _publisherDal.GetById(a => a.Id == updatePublisherVM.Id);
             publisher.PublisherName = updatePublisherVM.PublisherName;
             _publisherDal.Update(publisher);
             return new Result(true, "Publisher updated succesfully...");
         }
 
-        public IDataResult<List<Publisher>> GetAllPublishers()
+        public async Task<IDataResult<List<Publisher>>> GetAllPublishers()
         {
-            return new DataResult<List<Publisher>>(_publisherDal.GetAll(), true, "Publisher listed...");
+            var res = await _publisherDal.GetAll();
+            return new DataResult<List<Publisher>>(res, true, "Publisher listed...");
         }
 
-        public IDataResult<List<Publisher>> GetAllPublishersDetail()
+        public async Task<IDataResult<List<Publisher>>> GetAllPublishersDetail()
         {
-            return new DataResult<List<Publisher>>(_publisherDal.GetAllPublishersDetails(), true, "Publisher with detail listed...");
+            var res = await _publisherDal.GetAllPublishersDetails();
+            return new DataResult<List<Publisher>>(res, true, "Publisher with detail listed...");
         }
 
-        public IDataResult<Publisher> GetById(Guid id)
+        public async Task<IDataResult<Publisher>> GetById(Guid id)
         {
-            return new DataResult<Publisher>(_publisherDal.GetById(p => p.Id == id), true, "Publisher by id...");
+            var res = await _publisherDal.GetById(p => p.Id == id);
+            return new DataResult<Publisher>(res, true, "Publisher by id...");
         }      
 
-        private IResult CheckIfPublisherExists(string publisherName)
+        private async Task<IResult> CheckIfPublisherExists(string publisherName)
         {
-            var result = _publisherDal.GetAll(p => p.PublisherName == publisherName).Any();
-            if (result)
+            var result = await _publisherDal.GetAll(p => p.PublisherName == publisherName);
+            if (result is not null)
             {
                 return new Result(false, "Publisher aldready exists!");
             }
             return new Result(true, "Publisher not exists!");
         }
 
-        private IResult CheckIfPublisherExistsById(Guid id)
+        private async Task<IResult> CheckIfPublisherExistsById(Guid id)
         {
-            var result = _publisherDal.GetAll(p => p.Id == id).Any();
-            if (result)
+            var result = await _publisherDal.GetAll(p => p.Id == id);
+            if (result is not null)
             {
                 return new Result(true, "Publisher aldready exists!");
             }
