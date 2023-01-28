@@ -44,7 +44,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
-        //[Authorize(Roles = "Admin, Standard")]
+        [Authorize(Roles = "Admin, Standard")]
         [HttpGet("authors-detailed")]
         public async Task<IActionResult> GetDetail()
         {
@@ -56,7 +56,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CreateAuthorVM createAuthorVM, Guid bookId)
         {
@@ -68,7 +68,7 @@ namespace API.Controllers
             return BadRequest(result.Message);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("add-author-to-book")]
         public async Task<IActionResult> PostAuthorToBook([FromBody] CreateAuthorVM createAuthorVM, Guid bookId)
         {
@@ -82,7 +82,7 @@ namespace API.Controllers
 
 
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public async Task<IActionResult> Delete([FromBody] DeleteAuthorVM deleteAuthorVM)
         {

@@ -43,7 +43,7 @@ namespace API.Controllers
             return BadRequest();
         }
 
-        //[Authorize(Roles = "Admin, Standard")]
+        [Authorize(Roles = "Admin, Standard")]
         [HttpGet("books-detailed")]
         public async Task<IActionResult> GetDetail()
         {
@@ -67,7 +67,7 @@ namespace API.Controllers
             return BadRequest(result.Message);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("add-book-to-author")]
         public async Task<IActionResult> PostBookToAuthor([FromBody] CreateBookVM createBookVM, Guid authorId)
         {
